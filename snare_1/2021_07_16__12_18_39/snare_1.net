@@ -1,0 +1,203 @@
+# Created by BioNetGen 2.6.0
+begin parameters
+    1 ksp                   0.612e8  # Constant
+    2 ksm                   2.32e3  # Constant
+    3 kap                   3.82e6  # Constant
+    4 kam                   13  # Constant
+    5 b                     0.25  # Constant
+    6 gamma                 2e3  # Constant
+    7 delta                 0.417e-3  # Constant
+    8 a                     0.025  # Constant
+    9 _rateLaw3             a*gamma  # ConstantExpression
+   10 __reverse__R1_local1  (b^(1-1))*ksm  # ConstantExpression
+   11 __reverse__R2_local1  (b^(1-1))*kam  # ConstantExpression
+   12 __reverse__R1_local2  (b^(2-1))*ksm  # ConstantExpression
+   13 __reverse__R2_local2  (b^(2-1))*kam  # ConstantExpression
+   14 __reverse__R1_local3  (b^(3-1))*ksm  # ConstantExpression
+   15 __reverse__R1_local4  (b^(4-1))*ksm  # ConstantExpression
+   16 __reverse__R1_local5  (b^(5-1))*ksm  # ConstantExpression
+end parameters
+begin species
+    1 snare(a,a,dv~1,s,s,s,s,s) 1
+    2 Ca(b) 1
+    3 Ca(b!1).snare(a,a,dv~1,s!1,s,s,s,s) 0
+    4 Ca(b!1).snare(a!1,a,dv~1,s,s,s,s,s) 0
+    5 snare(a,a,dv~0,s,s,s,s,s) 0
+    6 V_release() 0
+    7 Ca(b!1).Ca(b!2).snare(a,a,dv~1,s!1,s!2,s,s,s) 0
+    8 Ca(b!1).Ca(b!2).snare(a!1,a,dv~1,s!2,s,s,s,s) 0
+    9 Ca(b!1).snare(a,a,dv~0,s!1,s,s,s,s) 0
+   10 Ca(b!1).Ca(b!2).snare(a!1,a!2,dv~1,s,s,s,s,s) 0
+   11 Ca(b!1).snare(a!1,a,dv~0,s,s,s,s,s) 0
+   12 Ca(b!1).Ca(b!2).Ca(b!3).snare(a,a,dv~1,s!1,s!2,s!3,s,s) 0
+   13 Ca(b!1).Ca(b!2).Ca(b!3).snare(a!1,a,dv~1,s!2,s!3,s,s,s) 0
+   14 Ca(b!1).Ca(b!2).snare(a,a,dv~0,s!1,s!2,s,s,s) 0
+   15 Ca(b!1).Ca(b!2).Ca(b!3).snare(a!1,a!2,dv~1,s!3,s,s,s,s) 0
+   16 Ca(b!1).Ca(b!2).snare(a!1,a,dv~0,s!2,s,s,s,s) 0
+   17 Ca(b!1).Ca(b!2).snare(a!1,a!2,dv~0,s,s,s,s,s) 0
+   18 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).snare(a,a,dv~1,s!1,s!2,s!3,s!4,s) 0
+   19 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).snare(a!1,a,dv~1,s!2,s!3,s!4,s,s) 0
+   20 Ca(b!1).Ca(b!2).Ca(b!3).snare(a,a,dv~0,s!1,s!2,s!3,s,s) 0
+   21 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).snare(a!1,a!2,dv~1,s!3,s!4,s,s,s) 0
+   22 Ca(b!1).Ca(b!2).Ca(b!3).snare(a!1,a,dv~0,s!2,s!3,s,s,s) 0
+   23 Ca(b!1).Ca(b!2).Ca(b!3).snare(a!1,a!2,dv~0,s!3,s,s,s,s) 0
+   24 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).snare(a,a,dv~1,s!1,s!2,s!3,s!4,s!5) 0
+   25 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).snare(a!1,a,dv~1,s!2,s!3,s!4,s!5,s) 0
+   26 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).snare(a,a,dv~0,s!1,s!2,s!3,s!4,s) 0
+   27 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).snare(a!1,a!2,dv~1,s!3,s!4,s!5,s,s) 0
+   28 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).snare(a!1,a,dv~0,s!2,s!3,s!4,s,s) 0
+   29 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).snare(a!1,a!2,dv~0,s!3,s!4,s,s,s) 0
+   30 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).Ca(b!6).snare(a!1,a,dv~1,s!2,s!3,s!4,s!5,s!6) 0
+   31 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).snare(a,a,dv~0,s!1,s!2,s!3,s!4,s!5) 0
+   32 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).Ca(b!6).snare(a!1,a!2,dv~1,s!3,s!4,s!5,s!6,s) 0
+   33 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).snare(a!1,a,dv~0,s!2,s!3,s!4,s!5,s) 0
+   34 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).snare(a!1,a!2,dv~0,s!3,s!4,s!5,s,s) 0
+   35 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).Ca(b!6).Ca(b!7).snare(a!1,a!2,dv~1,s!3,s!4,s!5,s!6,s!7) 0
+   36 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).Ca(b!6).snare(a!1,a,dv~0,s!2,s!3,s!4,s!5,s!6) 0
+   37 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).Ca(b!6).snare(a!1,a!2,dv~0,s!3,s!4,s!5,s!6,s) 0
+   38 Ca(b!1).Ca(b!2).Ca(b!3).Ca(b!4).Ca(b!5).Ca(b!6).Ca(b!7).snare(a!1,a!2,dv~0,s!3,s!4,s!5,s!6,s!7) 0
+end species
+begin reactions
+    1 1,2 3 5*ksp #_R1
+    2 1,2 4 2*kap #_R2
+    3 1 5,6 delta #_R3
+    4 2,3 7 4*ksp #_R1
+    5 2,4 8 5*ksp #_R1
+    6 2,5 9 5*ksp #_R1
+    7 3 1,2 __reverse__R1_local1 #_reverse__R1
+    8 2,3 8 2*kap #_R2
+    9 2,4 10 kap #_R2
+   10 2,5 11 2*kap #_R2
+   11 4 1,2 __reverse__R2_local1 #_reverse__R2
+   12 3 6,9 delta #_R3
+   13 4 6,11 delta #_R3
+   14 2,7 12 3*ksp #_R1
+   15 2,8 13 4*ksp #_R1
+   16 2,9 14 4*ksp #_R1
+   17 2,10 15 5*ksp #_R1
+   18 2,11 16 5*ksp #_R1
+   19 7 2,3 2*__reverse__R1_local2 #_reverse__R1
+   20 8 2,4 __reverse__R1_local1 #_reverse__R1
+   21 9 2,5 __reverse__R1_local1 #_reverse__R1
+   22 2,7 13 2*kap #_R2
+   23 2,8 15 kap #_R2
+   24 2,9 16 2*kap #_R2
+   25 2,11 17 kap #_R2
+   26 8 2,3 __reverse__R2_local1 #_reverse__R2
+   27 10 2,4 2*__reverse__R2_local2 #_reverse__R2
+   28 11 2,5 __reverse__R2_local1 #_reverse__R2
+   29 7 6,14 delta #_R3
+   30 8 6,16 delta #_R3
+   31 10 6,17 delta #_R3
+   32 10 6,17 _rateLaw3 #_R5
+   33 2,12 18 2*ksp #_R1
+   34 2,13 19 3*ksp #_R1
+   35 2,14 20 3*ksp #_R1
+   36 2,15 21 4*ksp #_R1
+   37 2,16 22 4*ksp #_R1
+   38 2,17 23 5*ksp #_R1
+   39 12 2,7 3*__reverse__R1_local3 #_reverse__R1
+   40 13 2,8 2*__reverse__R1_local2 #_reverse__R1
+   41 14 2,9 2*__reverse__R1_local2 #_reverse__R1
+   42 15 2,10 __reverse__R1_local1 #_reverse__R1
+   43 16 2,11 __reverse__R1_local1 #_reverse__R1
+   44 2,12 19 2*kap #_R2
+   45 2,13 21 kap #_R2
+   46 2,14 22 2*kap #_R2
+   47 2,16 23 kap #_R2
+   48 13 2,7 __reverse__R2_local1 #_reverse__R2
+   49 15 2,8 2*__reverse__R2_local2 #_reverse__R2
+   50 16 2,9 __reverse__R2_local1 #_reverse__R2
+   51 17 2,11 2*__reverse__R2_local2 #_reverse__R2
+   52 12 6,20 delta #_R3
+   53 13 6,22 delta #_R3
+   54 15 6,23 delta #_R3
+   55 15 6,23 _rateLaw3 #_R5
+   56 2,18 24 ksp #_R1
+   57 2,19 25 2*ksp #_R1
+   58 2,20 26 2*ksp #_R1
+   59 2,21 27 3*ksp #_R1
+   60 2,22 28 3*ksp #_R1
+   61 2,23 29 4*ksp #_R1
+   62 18 2,12 4*__reverse__R1_local4 #_reverse__R1
+   63 19 2,13 3*__reverse__R1_local3 #_reverse__R1
+   64 20 2,14 3*__reverse__R1_local3 #_reverse__R1
+   65 21 2,15 2*__reverse__R1_local2 #_reverse__R1
+   66 22 2,16 2*__reverse__R1_local2 #_reverse__R1
+   67 23 2,17 __reverse__R1_local1 #_reverse__R1
+   68 2,18 25 2*kap #_R2
+   69 2,19 27 kap #_R2
+   70 2,20 28 2*kap #_R2
+   71 2,22 29 kap #_R2
+   72 19 2,12 __reverse__R2_local1 #_reverse__R2
+   73 21 2,13 2*__reverse__R2_local2 #_reverse__R2
+   74 22 2,14 __reverse__R2_local1 #_reverse__R2
+   75 23 2,16 2*__reverse__R2_local2 #_reverse__R2
+   76 18 6,26 delta #_R3
+   77 19 6,28 delta #_R3
+   78 21 6,29 delta #_R3
+   79 21 6,29 _rateLaw3 #_R5
+   80 2,25 30 ksp #_R1
+   81 2,26 31 ksp #_R1
+   82 2,27 32 2*ksp #_R1
+   83 2,28 33 2*ksp #_R1
+   84 2,29 34 3*ksp #_R1
+   85 24 2,18 5*__reverse__R1_local5 #_reverse__R1
+   86 25 2,19 4*__reverse__R1_local4 #_reverse__R1
+   87 26 2,20 4*__reverse__R1_local4 #_reverse__R1
+   88 27 2,21 3*__reverse__R1_local3 #_reverse__R1
+   89 28 2,22 3*__reverse__R1_local3 #_reverse__R1
+   90 29 2,23 2*__reverse__R1_local2 #_reverse__R1
+   91 2,24 30 2*kap #_R2
+   92 2,25 32 kap #_R2
+   93 2,26 33 2*kap #_R2
+   94 2,28 34 kap #_R2
+   95 25 2,18 __reverse__R2_local1 #_reverse__R2
+   96 27 2,19 2*__reverse__R2_local2 #_reverse__R2
+   97 28 2,20 __reverse__R2_local1 #_reverse__R2
+   98 29 2,22 2*__reverse__R2_local2 #_reverse__R2
+   99 24 6,31 delta #_R3
+  100 25 6,33 delta #_R3
+  101 27 6,34 delta #_R3
+  102 24 6,31 gamma #_R4
+  103 27 6,34 _rateLaw3 #_R5
+  104 2,32 35 ksp #_R1
+  105 2,33 36 ksp #_R1
+  106 2,34 37 2*ksp #_R1
+  107 30 2,25 5*__reverse__R1_local5 #_reverse__R1
+  108 31 2,26 5*__reverse__R1_local5 #_reverse__R1
+  109 32 2,27 4*__reverse__R1_local4 #_reverse__R1
+  110 33 2,28 4*__reverse__R1_local4 #_reverse__R1
+  111 34 2,29 3*__reverse__R1_local3 #_reverse__R1
+  112 2,30 35 kap #_R2
+  113 2,31 36 2*kap #_R2
+  114 2,33 37 kap #_R2
+  115 30 2,24 __reverse__R2_local1 #_reverse__R2
+  116 32 2,25 2*__reverse__R2_local2 #_reverse__R2
+  117 33 2,26 __reverse__R2_local1 #_reverse__R2
+  118 34 2,28 2*__reverse__R2_local2 #_reverse__R2
+  119 30 6,36 delta #_R3
+  120 32 6,37 delta #_R3
+  121 30 6,36 gamma #_R4
+  122 32 6,37 _rateLaw3 #_R5
+  123 2,37 38 ksp #_R1
+  124 35 2,32 5*__reverse__R1_local5 #_reverse__R1
+  125 36 2,33 5*__reverse__R1_local5 #_reverse__R1
+  126 37 2,34 4*__reverse__R1_local4 #_reverse__R1
+  127 2,36 38 kap #_R2
+  128 35 2,30 2*__reverse__R2_local2 #_reverse__R2
+  129 36 2,31 __reverse__R2_local1 #_reverse__R2
+  130 37 2,33 2*__reverse__R2_local2 #_reverse__R2
+  131 35 6,38 delta #_R3
+  132 35 6,38 gamma #_R4
+  133 35 6,38 _rateLaw3 #_R5
+  134 38 2,37 5*__reverse__R1_local5 #_reverse__R1
+  135 38 2,36 2*__reverse__R2_local2 #_reverse__R2
+end reactions
+begin groups
+    1 V_release            6
+    2 sync_act             120*24,120*30,120*35
+    3 async_act            2*10,2*15,2*21,2*27,2*32,2*35
+    4 ns                   3,2*7,8,9,3*12,2*13,2*14,15,16,4*18,3*19,3*20,2*21,2*22,23,5*24,4*25,4*26,3*27,3*28,2*29,5*30,5*31,4*32,4*33,3*34,5*35,5*36,4*37,5*38
+    5 na                   4,8,2*10,11,13,2*15,16,2*17,19,2*21,22,2*23,25,2*27,28,2*29,30,2*32,33,2*34,2*35,36,2*37,2*38
+end groups
