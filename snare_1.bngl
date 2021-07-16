@@ -8,6 +8,8 @@ begin parameters
   gamma 2e3
   delta 0.417e-3 # spontaneous release rate
   a 0.025
+  k_dock 0.2
+  Ca0 1e-7
 end parameters
 
 begin molecule types
@@ -17,14 +19,15 @@ begin molecule types
 end molecule types
 
 begin species
-  snare(s,s,s,s,s,a,a,dv~1) 1
-  Ca(b) 1
+  snare(s,s,s,s,s,a,a,dv~1) 7000
+  # fixed calcium concentration
+  $Ca(b) Ca0
 end species
 
 begin observables
   Molecules V_release V_release()
-  Molecules sync_act snare(s!+,s!+,s!+,s!+,s!+,dv~1)
-  Molecules async_act snare(a!+,a!+,dv~1)
+  Molecules sync_act snare(s!+,s!+,s!+,s!+,s!+)
+  Molecules async_act snare(a!+,a!+)
   Molecules ns snare(s!+)
   Molecules na snare(a!+)
 end observables
@@ -44,9 +47,12 @@ begin reaction rules
   #asynchronous
   snare(a!+,a!+,dv~1) -> snare(a!+,a!+,dv~0) + V_release() a*gamma
 
+  # vesicle docking to snare
+  snare(dv~0) -> snare(dv~1) k_dock
+
 end reaction rules
 
 end model
 
 generate_network({overwrite=>1})
-simulate({method=>"ode",t_end=>0.2,n_steps=>1000})
+simulate({method=>"ssa",t_end=>100,n_steps=>10000})

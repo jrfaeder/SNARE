@@ -1,0 +1,85 @@
+begin model
+
+begin parameters
+  ksp 0.612e8 # 1/M 1/s
+  ksm 2.32e3 # 1/s
+  kap 3.82e6 # 1/M 1/s
+  kam 13     # 1/s
+  gamma 2e3 # 1/s
+  delta 0.417e-3 # 1/s
+  k_dock 0.2 # 1/s
+  a 0.025 # Reduced release probability for asynchronous
+  b 0.25 # Calcium binding cooperativity factor
+  Ca0 1e-7 # Basal calcium concentratiom # 1/M
+  C_peak 15e-6 # Peak calcium concentration # 1/M
+
+  # pulse parameters
+  td 0.003
+  sigma 0.0005
+  tick_dens 10000
+end parameters
+
+begin molecule types
+  # Synchronous sensor
+  Syt2(s,c~0~1~2~3~4~5,dv~0~1)
+  # Asynchronous sensor
+  Syt7(s,c~0~1~2)
+  V_release()
+  ticks()
+end molecule types
+
+begin species
+  # SNARE complex
+  Syt2(s!1,c~0,dv~1).Syt7(s!1,c~0) 70
+end species
+
+begin observables
+  Molecules SNARE_sync Syt2(c~5)
+  Molecules SNARE_async Syt7(c~2)
+  Molecules V_release V_release()
+  Molecules ticks ticks()
+end observables
+
+begin functions
+  Ca() Ca0 + C_peak*if(ticks/tick_dens>0,exp(-(((ticks/tick_dens-td)/sigma)^2)),0) \
+       + C_peak*if(ticks()/tick_dens>0,exp(-(((ticks()/tick_dens-td-0.020)/sigma)^2)),0)
+#  Ca() Ca0
+
+end functions
+
+begin reaction rules
+  # Calcium binding to synchronous sensor
+  Syt2(c~0) <-> Syt2(c~1) 5*ksp*Ca(), 1*b^0*ksm
+  Syt2(c~1) <-> Syt2(c~2) 4*ksp*Ca(), 2*b^1*ksm
+  Syt2(c~2) <-> Syt2(c~3) 3*ksp*Ca(), 3*b^2*ksm
+  Syt2(c~3) <-> Syt2(c~4) 2*ksp*Ca(), 4*b^3*ksm
+  Syt2(c~4) <-> Syt2(c~5) 1*ksp*Ca(), 5*b^4*ksm
+
+  # Calcium binding to asynchronous sensor
+  Syt7(c~0) <-> Syt7(c~1) 2*kap*Ca(), 1*b^0*kam
+  Syt7(c~1) <-> Syt7(c~2) 1*kap*Ca(), 2*b^1*kam
+
+  # Vesicle release
+  # spontaneous
+  Syt2(dv~1) -> Syt2(dv~0) + V_release() delta
+  # synchronous
+  Syt2(c~5,dv~1) -> Syt2(c~5,dv~0) + V_release() gamma
+  # asynchronous
+  Syt2(dv~1).Syt7(c~2) -> Syt2(dv~0).Syt7(c~2) + V_release() a*gamma
+
+  # Vesicle docking to SNARE
+  Syt2(dv~0) -> Syt2(dv~1) k_dock
+
+  # Clock reaction
+  0->ticks() tick_dens
+end reaction rules
+
+end model
+generate_network({overwrite=>1})
+# equilibrate prior to calcium influx
+#simulate({method=>"ssa",t_end=>2,n_steps=>500,print_functions=>1})
+
+# run simulation
+setConcentration('V_release()',0)
+#simulate({method=>"ode",t_end=>2,n_steps=>500})
+simulate({method=>"ode",t_end=>0.05,n_steps=>1000,seed=>2,print_functions=>1})
