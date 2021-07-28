@@ -37,13 +37,13 @@ begin observables
   Molecules SNARE_sync Syt2(c~5)
   Molecules SNARE_async Syt7(c~2)
   Molecules V_release V_release()
-  Molecules ticks ticks()
+#  Molecules ticks ticks()
 end observables
 
 begin functions
-  Ca() Ca0 + C_peak*if(ticks/tick_dens>0,exp(-(((ticks/tick_dens-td)/sigma)^2)),0) \
-       + C_peak*if(ticks()/tick_dens>0,exp(-(((ticks()/tick_dens-td-0.020)/sigma)^2)),0)
-#  Ca() Ca0
+#  Ca() Ca0 + C_peak*if(ticks/tick_dens>0,exp(-(((ticks/tick_dens-td)/sigma)^2)),0) \
+#       + C_peak*if(ticks()/tick_dens>0,exp(-(((ticks()/tick_dens-td-0.020)/sigma)^2)),0)
+  Ca() Ca0
 
 end functions
 
@@ -71,7 +71,7 @@ begin reaction rules
   Syt2(dv~0) -> Syt2(dv~1) k_dock
 
   # Clock reaction
-  0->ticks() tick_dens
+ # 0->ticks() tick_dens
 end reaction rules
 
 end model
@@ -82,4 +82,4 @@ generate_network({overwrite=>1})
 # run simulation
 setConcentration('V_release()',0)
 #simulate({method=>"ode",t_end=>2,n_steps=>500})
-simulate({method=>"ode",t_end=>0.05,n_steps=>1000,seed=>2,print_functions=>1})
+simulate({method=>"ssa",seed=>2,t_end=>2,n_steps=>1000})

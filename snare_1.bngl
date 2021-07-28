@@ -1,15 +1,17 @@
 begin model
 begin parameters
-  ksp 0.612e8 # 1/M 1/s 
+  NaV 6.022e8
+  V_but 1
+  ksp 0.612e8/(NaV*V_but) # 1/M 1/s 
   ksm 2.32e3
-  kap 3.82e6
+  kap 3.82e6/(NaV*V_but)
   kam 13
   b 0.25
   gamma 2e3
   delta 0.417e-3 # spontaneous release rate
   a 0.025
   k_dock 0.2
-  Ca0 1e-7
+  Ca0 1e-7*NaV*V_but
 end parameters
 
 begin molecule types
@@ -19,15 +21,15 @@ begin molecule types
 end molecule types
 
 begin species
-  snare(s,s,s,s,s,a,a,dv~1) 7000
+  snare(s,s,s,s,s,a,a,dv~1) 70
   # fixed calcium concentration
   $Ca(b) Ca0
 end species
 
 begin observables
+  Species SNARE_sync snare(s!+,s!+,s!+,s!+,s!+)
+  Species SNARE_async snare(a!+,a!+)
   Molecules V_release V_release()
-  Molecules sync_act snare(s!+,s!+,s!+,s!+,s!+)
-  Molecules async_act snare(a!+,a!+)
   Molecules ns snare(s!+)
   Molecules na snare(a!+)
 end observables
@@ -55,4 +57,4 @@ end reaction rules
 end model
 
 generate_network({overwrite=>1})
-simulate({method=>"ssa",t_end=>100,n_steps=>10000})
+simulate({method=>"ssa",seed=>3,t_end=>2,n_steps=>1000})
